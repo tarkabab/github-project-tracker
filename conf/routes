@@ -1,0 +1,42 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page:
+GET     /                           controllers.Application.index()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+##################################### 
+#									#
+# API for client applications		#
+#									#
+#####################################
+
+# Users:
+POST 	/api/users 													controllers.api.Users.register()
+GET 	/api/users/:userName/profile 								controllers.api.Users.getProfile(userName: String)
+PUT 	/api/users/:userName/profile 								controllers.api.Users.updateProfile(userName: String)
+
+# Teams:
+GET		/api/teams/:teamId 											controllers.api.Team.getTeam(teamId: Long)
+GET		/api/teams/:teamId/members									controllers.api.Team.getMembers(teamId: Long)
+DELETE	/api/teams/:teamId/members/:memberId 						controllers.api.Team.removeMember(teamId: Long, memberId: String)
+POST	/api/teams/:teamId/members 									controllers.api.Team.addMember(teamId: Long, memberId: String)
+POST 	/api/teams 													controllers.api.Team.createTeam()
+
+# Projects:
+GET		/api/projects/:projectId/backlogitems						controllers.api.Project.getBacklogItems(projectId: Long)
+GET		/api/projects/:projectId 									controllers.api.Project.getProject(projectId: Long)
+PUT		/api/projects/:projectId/description 						controllers.api.Project.updateDescription(projectId: Long)
+POST 	/api/projects 												controllers.api.Project.createProject()
+
+# Backlog items:
+GET		/api/backlogitems/:backlogItemId/tasks/:taskId 				controllers.api.BacklogItem.getTask(backlogItemId: Long, taskId: Long)
+GET		/api/backlogitems/:backlogItemId/tasks						controllers.api.BacklogItem.getTasks(backlogItemId: Long)
+GET		/api/backlogitems/:backlogItemId 							controllers.api.BacklogItem.getBacklogItem(backlogItemId: Long)
+PUT		/api/backlogitems/:backlogItemId/priority 					controllers.api.BacklogItem.prioritize(backlogItemId: Long)
+PUT 	/api/backlogitems/:backlogItemId/summary 					controllers.api.BacklogItem.changeSummary(backlogItemId: Long)
+POST 	/api/backlogitems											controllers.api.BacklogItem.createBacklogItem()
+POST 	/api/backlogitems/:backlogItemId/tasks 						controllers.api.BacklogItem.createTask(backlogItemId: Long)
