@@ -11,6 +11,7 @@ import com.google.common.collect.*;
 import com.google.common.base.Optional;
 
 import domain.model.BacklogItem;
+import domain.model.Priority;
 public class BacklogItems extends Controller {
 
     static Form<BacklogItem> backlogItemForm = Form.form(BacklogItem.class);
@@ -112,13 +113,14 @@ public class BacklogItems extends Controller {
     @BodyParser.Of(BodyParser.Json.class)
     @Transactional
     public static Result changeSummary(Long backlogItemId) {
-        Optional<BacklogItem> backlogItem = BacklogItem.forId(backlogItemId);
-		if (backlogItem.isPresent()) {
+        Optional<BacklogItem> searchResult = BacklogItem.forId(backlogItemId);
+		if (searchResult.isPresent()) {
             JsonNode json = request().body().asJson();
             String newSummary = json.path("summary").getTextValue();
-            backlogItem.get().summary = newSummary;
-            backlogItem.get().save();
-            return ok(Json.toJson(backlogItem.get()));
+            BacklogItem backlogItem = searchResult.get();
+            backlogItem.summary = newSummary;
+            backlogItem.update();
+            return ok(Json.toJson(backlogItem));
         } 
         return notFound(Json.toJson(ImmutableMap.of("error", "BacklogItem with id " + backlogItemId + " cannot be found")));
 	}
@@ -134,8 +136,23 @@ public class BacklogItems extends Controller {
      *
      * 200, empty
      */
-	public static Result prioritize(Long backlogItemId) {
-		return TODO;
+    @BodyParser.Of(BodyParser.Json.class)
+    @Transactional
+    public static Result prioritize(Long backlogItemId) {
+        Optional<BacklogItem> searchResult = BacklogItem.forId(backlogItemId);
+		if (searchResult.isPresent()) {
+            JsonNode json = request().body().asJson();
+            String parameter = json.path("priority").getTextValue();
+            Priority newPriority = Priority.valueOf(parameter);
+            if(newPriority == null) {
+                return badRequest(Json.toJson(ImmutableMap.of("error", "Unknown priority: " + parameter)));
+            }
+            BacklogItem backlogItem = searchResult.get();
+            backlogItem.priority = newPriority;
+            backlogItem.update();
+            return ok(Json.toJson(backlogItem));
+        } 
+        return notFound(Json.toJson(ImmutableMap.of("error", "BacklogItem with id " + backlogItemId + " cannot be found")));
 	}
 
     /**

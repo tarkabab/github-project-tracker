@@ -69,25 +69,33 @@ public class BacklogItemApiTest extends AbstractApiTest {
 
 	@Test
 	public void updatedPriorityIsRepresentedInResource() {
+		final String STATUS_BEFORE_UPDATE = "URGENT";
+		final String STATUS_AFTER_UPDATE = "LOW";
+
 		running(testServer(3333), new Runnable() {
 			public void run() {	
 				assertThat(createTeam("Team Foo").getStatus()).isEqualTo(CREATED);
 				assertThat(createProject("Todo App 3.0", 1L).getStatus()).isEqualTo(CREATED);
 				assertThat(createBacklogItem("some stuff", 1L).getStatus()).isEqualTo(CREATED);
-				final WS.Response updateResponse = changeSummary(1L, "modified user story");
+
+				final WS.Response getBeforeUpdateResponse = getBacklogItem(1L);
+				assertThat(getBeforeUpdateResponse.asJson().path("priority").getTextValue()).isEqualTo(STATUS_BEFORE_UPDATE);
+				
+				final WS.Response updateResponse = prioritize(1L, Priority.valueOf(STATUS_AFTER_UPDATE));
 				assertThat(updateResponse.getStatus()).isEqualTo(OK);
 				final JsonNode json = Json.toJson(ImmutableMap.builder()
 					.put("id", 1L)
 					.put("name", "some stuff")
-					.put("summary", "modified user story")
+					.put("summary", "As a user I want to have a shiny UI")
 					.put("itemType", "FEATURE")
 					.put("storyPoints", 5)
-					.put("priority", "URGENT")
+					.put("priority", STATUS_AFTER_UPDATE)
 					.put("status", "ESTIMATED")
+					.put("tasks", 0)
 					.put("projectId", 1L).build());
-				final WS.Response getResponse = getBacklogItem(1L);
-				assertThat(getResponse.getStatus()).isEqualTo(OK);
-				assertEquals(json, getResponse.asJson());
+				final WS.Response getAfterUpdateResponse = getBacklogItem(1L);
+				assertThat(getAfterUpdateResponse.getStatus()).isEqualTo(OK);
+				assertThat(json.equals(getAfterUpdateResponse.asJson()));
 			}
 		});
 	}
