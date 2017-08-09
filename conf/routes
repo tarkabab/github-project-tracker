@@ -20,11 +20,11 @@ GET 	/api/users/:userName/profile 								controllers.api.Users.getProfile(userN
 PUT 	/api/users/:userName/profile 								controllers.api.Users.updateProfile(userName: String)
 
 # Teams:
-GET		/api/teams/:teamId 											controllers.api.Team.getTeam(teamId: Long)
-GET		/api/teams/:teamId/members									controllers.api.Team.getMembers(teamId: Long)
-DELETE	/api/teams/:teamId/members/:memberId 						controllers.api.Team.removeMember(teamId: Long, memberId: String)
-POST	/api/teams/:teamId/members 									controllers.api.Team.addMember(teamId: Long, memberId: String)
-POST 	/api/teams 													controllers.api.Team.createTeam()
+GET		/api/teams/:teamId 											controllers.api.Teams.getTeam(teamId: Long)
+GET		/api/teams/:teamId/members									controllers.api.Teams.getMembers(teamId: Long)
+DELETE	/api/teams/:teamId/members/:memberId 						controllers.api.Teams.removeMember(teamId: Long, memberId: String)
+POST	/api/teams/:teamId/members 									controllers.api.Teams.addMember(teamId: Long, memberId: String)
+POST 	/api/teams 													controllers.api.Teams.createTeam()
 
 # Projects:
 GET		/api/projects/:projectId/backlogitems						controllers.api.Project.getBacklogItems(projectId: Long)
