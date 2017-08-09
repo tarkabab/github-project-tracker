@@ -27,10 +27,10 @@ POST	/api/teams/:teamId/members 									controllers.api.Teams.addMember(teamId:
 POST 	/api/teams 													controllers.api.Teams.createTeam()
 
 # Projects:
-GET		/api/projects/:projectId/backlogitems						controllers.api.Project.getBacklogItems(projectId: Long)
-GET		/api/projects/:projectId 									controllers.api.Project.getProject(projectId: Long)
-PUT		/api/projects/:projectId/description 						controllers.api.Project.updateDescription(projectId: Long)
-POST 	/api/projects 												controllers.api.Project.createProject()
+GET		/api/projects/:projectId/backlogitems						controllers.api.Projects.getBacklogItems(projectId: Long)
+GET		/api/projects/:projectId 									controllers.api.Projects.getProject(projectId: Long)
+PUT		/api/projects/:projectId/description 						controllers.api.Projects.updateDescription(projectId: Long)
+POST 	/api/projects 												controllers.api.Projects.createProject()
 
 # Backlog items:
 GET		/api/backlogitems/:backlogItemId/tasks/:taskId 				controllers.api.BacklogItem.getTask(backlogItemId: Long, taskId: Long)
