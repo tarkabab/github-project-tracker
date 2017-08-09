@@ -32,11 +32,12 @@ public class BacklogItemApiTest extends AbstractApiTest {
 					.put("storyPoints", 5)
 					.put("priority", "URGENT")
 					.put("status", "ESTIMATED")
+					.put("tasks", 0)
 					.put("projectId", 1L).build());
-				assertEquals(json, createResponse.asJson());
+				assertThat(json.equals(createResponse.asJson()));
 				final WS.Response getResponse = getBacklogItem(1L);
 				assertThat(getResponse.getStatus()).isEqualTo(OK);
-				assertEquals(json, getResponse.asJson());
+				assertThat(json.equals(getResponse.asJson()));
 			}
 		});
 	}
@@ -61,7 +62,7 @@ public class BacklogItemApiTest extends AbstractApiTest {
 					.put("projectId", 1L).build());
 				final WS.Response getResponse = getBacklogItem(1L);
 				assertThat(getResponse.getStatus()).isEqualTo(OK);
-				assertEquals(json, getResponse.asJson());
+				assertThat(json.equals(getResponse.asJson()));
 			}
 		});
 	}

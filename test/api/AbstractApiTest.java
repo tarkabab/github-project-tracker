@@ -72,11 +72,13 @@ public class AbstractApiTest {
 
 	static WS.Response createBacklogItem(String name, Long projectId) {
 		final JsonNode body = Json.toJson(ImmutableMap.builder()
-			.put("name", "As a user I want to have a shiny UI")
-			.put("summary", "modified user story")
+			.put("name", name)
+			.put("summary", "As a user I want to have a shiny UI")
 			.put("itemType", "FEATURE")
 			.put("storyPoints", 5)
 			.put("priority", "URGENT")
+			.put("status", "ESTIMATED")
+			.put("tasks", 0)
 			.put("projectId", 1L).build());
 		return WS.url(backlogItemsEndpoint).post(body).get();
 	}
