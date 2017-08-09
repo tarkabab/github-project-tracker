@@ -19,9 +19,11 @@ public class ProjectApiTest extends AbstractApiTest {
 		running(testServer(3333), new Runnable() {
 			public void run() {
 				assertThat(createTeam("Team Foo").getStatus()).isEqualTo(CREATED);
+
 				final WS.Response createResponse = createProject("Yet Another To-Do App", 1L);
 				assertThat(createResponse.getStatus()).isEqualTo(CREATED);
 				checkJsonBody(createResponse.asJson());
+
 				final WS.Response getResponse = getProject(1L);
 				assertThat(getResponse.getStatus()).isEqualTo(OK);
 				checkJsonBody(getResponse.asJson());
@@ -34,12 +36,12 @@ public class ProjectApiTest extends AbstractApiTest {
 		running(testServer(3333), new Runnable() {
 			public void run() {
 				assertThat(createTeam("Team Foo").getStatus()).isEqualTo(CREATED);
-				assertThat(createProject("Yet Another To-Do App", 1L)).isEqualTo(CREATED);
+				assertThat(createProject("Yet Another To-Do App", 1L).getStatus()).isEqualTo(CREATED);
 				final WS.Response updateResponse = changeDescription(1L, "new description");
 				assertThat(updateResponse.getStatus()).isEqualTo(OK);
 				final WS.Response getResponse = getProject(1L);
 				assertThat(getResponse.getStatus()).isEqualTo(OK);
-				checkJsonBody(getResponse.asJson());
+				checkJsonBody(getResponse.asJson(), "new description");
 			}
 		});
 	}
