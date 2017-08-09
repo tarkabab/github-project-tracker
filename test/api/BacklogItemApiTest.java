@@ -120,7 +120,7 @@ public class BacklogItemApiTest extends AbstractApiTest {
 						.put("status", "ESTIMATED")
 						.put("tasks", 0)
 						.put("projectId", 1L).build()));
-				assertEquals(json, response.asJson());
+				assertThat(json.equals(response.asJson()));
 			}
 		});
 	}

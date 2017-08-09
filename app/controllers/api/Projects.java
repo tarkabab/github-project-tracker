@@ -9,8 +9,10 @@ import play.db.ebean.Transactional;
 import org.codehaus.jackson.JsonNode;
 import com.google.common.collect.*;
 import com.google.common.base.Optional;
+import java.util.List;
 
 import domain.model.Project;
+import domain.model.BacklogItem;
 
 public class Projects extends Controller {
 
@@ -108,7 +110,14 @@ public class Projects extends Controller {
      *
      */
 	public static Result getBacklogItems(Long projectId) {
-		return TODO;
+        final Optional<Project> searchResult = Project.forId(projectId);
+		if (searchResult.isPresent()) {
+            Project project = searchResult.get();
+            List<BacklogItem> backlogItems = BacklogItem.forProject(projectId);
+			return ok(Json.toJson(backlogItems));
+		} else {
+		    return notFound(Json.toJson(ImmutableMap.of("error", "Project with id " + projectId + " cannot be found")));
+		}
 	}
 
     /**

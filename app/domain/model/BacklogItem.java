@@ -9,6 +9,8 @@ import com.google.common.base.Optional;
 import javax.persistence.*;
 import javax.validation.*;
 
+import java.util.List;
+
 @Entity
 public class BacklogItem extends Model {
 
@@ -34,4 +36,10 @@ public class BacklogItem extends Model {
 
 	public static Optional<BacklogItem> forId(final Long backlogItemId) {
 		return Optional.fromNullable(find.byId(backlogItemId));
-	}}
+	}
+
+    public static List<BacklogItem> forProject(final Long projectId) {
+
+		return find.where().eq("projectId", projectId).findList();
+	}
+}
