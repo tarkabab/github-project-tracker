@@ -161,16 +161,16 @@ public class BacklogItemApiTest extends AbstractApiTest {
 	}
 
 	private static void checkTaskJson(JsonNode json) {
-		assertThat(json.path("id").getIntValue()).isEqualTo(1);
-		assertThat(json.path("name").getTextValue()).isEqualTo("set up project");
-		assertThat(json.path("description").getTextValue()).isEqualTo("What needs to be done");
-		assertThat(json.path("backlogItemId").getLongValue()).isEqualTo(1L);
-		assertThat(json.path("githubStatus").getTextValue()).isEqualTo("OPEN");
-		assertTrue(json.path("githubUrl").isTextual());
-		assertTrue(json.path("githubComments").isArray());
-		assertTrue(json.path("githubComments").path(0).path("login").isTextual());
-		assertTrue(json.path("githubComments").path(0).path("body").isTextual());
-		assertTrue(json.path("githubComments").path(0).path("url").isTextual());
+		assertEquals("id check failed", json.path("id").getIntValue(), 1);
+		assertEquals("name check failed", json.path("name").getTextValue(), "set up project");
+		assertEquals("description check failed", json.path("description").getTextValue(), "What needs to be done");
+		assertEquals("backlogItemId check failed", json.path("backlogItemId").getLongValue(), 1L);
+		assertEquals("githubStatus check failed", json.path("githubStatus").getTextValue(), "OPEN");
+		assertTrue("githubUrl is not text", json.path("githubUrl").isTextual());
+		assertTrue("githubComments is not an array", json.path("githubComments").isArray());
+		assertTrue("githubComment must have login parameter", json.path("githubComments").path(0).path("login").isTextual());
+		assertTrue("githubComment must have body parameter", json.path("githubComments").path(0).path("body").isTextual());
+		assertTrue("githubComment must have url parameter", json.path("githubComments").path(0).path("url").isTextual());
 	}
 
 	private static WS.Response changeSummary(Long backlogItemId, String newSummary) {

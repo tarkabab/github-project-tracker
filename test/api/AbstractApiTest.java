@@ -10,7 +10,11 @@ import static org.fest.assertions.Assertions.*;
 import static org.junit.Assert.*;
 
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ObjectNode;
+import org.codehaus.jackson.node.ArrayNode;
 import com.google.common.collect.*;
+
+import java.util.Arrays;
 
 public class AbstractApiTest {
 
@@ -96,6 +100,15 @@ public class AbstractApiTest {
 			"name", name,
 			"description", "What needs to be done",
 			"backlogItemId", backlogItemId));
+		final ArrayNode comments = ((ObjectNode)body).putArray("githubComments");
+		final JsonNode comment = Json.toJson(ImmutableMap.of(
+			"login", "login name",
+			"body", "comment body",
+			"url", "http://comment.url"));
+		comments.add(comment);
+
+		// comments.add("{\"login\":\"logged in commenter\",\"body\":\"comment body\",\"url\":\"http://comment.url\"}");
+		// Json.parse("[{\"login\":\"logged in commenter\",\"body\":\"comment body\",\"url\":\"http://comment.url\"}]"));
 		return WS.url(backlogItemsEndpoint + "/" + backlogItemId + "/tasks").post(body).get();
 	}
 

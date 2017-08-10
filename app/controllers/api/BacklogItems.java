@@ -9,12 +9,17 @@ import play.db.ebean.Transactional;
 import org.codehaus.jackson.JsonNode;
 import com.google.common.collect.*;
 import com.google.common.base.Optional;
+import java.util.List;
 
 import domain.model.BacklogItem;
 import domain.model.Priority;
+import domain.model.Task;
+
+
 public class BacklogItems extends Controller {
 
     static Form<BacklogItem> backlogItemForm = Form.form(BacklogItem.class);
+    static Form<Task> taskForm = Form.form(Task.class);
 
     /**
      * Returns the Backlog Item with the given id
@@ -69,7 +74,17 @@ public class BacklogItems extends Controller {
      *
      */
 	public static Result getTask(Long backlogItemId, Long taskId) {
-		return TODO;
+        final Optional<BacklogItem> backlogItemSearchResult = BacklogItem.forId(backlogItemId);
+		if (backlogItemSearchResult.isPresent()) {
+            final Optional<Task> taskSearchResult = Task.forId(taskId);
+		    if (taskSearchResult.isPresent()) {
+			    return ok(Json.toJson(taskSearchResult.get()));
+            } else {
+		        return notFound(Json.toJson(ImmutableMap.of("error", "Task with id " + taskId + " cannot be found")));
+            }
+		} else {
+		    return notFound(Json.toJson(ImmutableMap.of("error", "Backlog Item with id " + backlogItemId + " cannot be found")));
+        }
 	}
 
     /**
@@ -95,7 +110,13 @@ public class BacklogItems extends Controller {
      *
      */
 	public static Result getTasks(Long backlogItemId) {
-		return TODO;
+        final Optional<BacklogItem> backlogItemSearchResult = BacklogItem.forId(backlogItemId);
+		if (backlogItemSearchResult.isPresent()) {
+            final List<Task> taskSearchResult = Task.forBacklogItem(backlogItemId);
+			return ok(Json.toJson(taskSearchResult));
+		} else {
+		    return notFound(Json.toJson(ImmutableMap.of("error", "Backlog Item with id " + backlogItemId + " cannot be found")));
+        }
 	}
 
     /**
@@ -226,8 +247,18 @@ public class BacklogItems extends Controller {
      * }
      *
      */
-	public static Result createTask(Long backlogItemId) {
-		return TODO;
+    @BodyParser.Of(BodyParser.Json.class)
+    @Transactional
+    public static Result createTask(Long backlogItemId) {
+        final JsonNode json = request().body().asJson();
+        final Form<Task> filled = taskForm.bind(json);
+
+        if (!filled.hasErrors()) {
+			final Task task = filled.get();
+            task.save();
+			return created(Json.toJson(task));
+		}
+        return badRequest(filled.errorsAsJson());
 	}
 
 }
