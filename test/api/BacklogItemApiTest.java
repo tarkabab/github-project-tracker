@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 import org.codehaus.jackson.JsonNode;
 import com.google.common.collect.*;
 
-import domain.model.Priority;
+import domain.types.Priority;
 
 public class BacklogItemApiTest extends AbstractApiTest {
 

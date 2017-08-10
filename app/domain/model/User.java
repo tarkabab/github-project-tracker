@@ -9,6 +9,8 @@ import com.google.common.base.Optional;
 import javax.persistence.*;
 import javax.validation.*;
 
+import domain.types.UserNameAlreadyTakenException;
+
 @Entity
 public class User extends Model {
 	@Id

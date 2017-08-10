@@ -9,6 +9,8 @@ import com.google.common.base.Optional;
 import javax.persistence.*;
 import javax.validation.*;
 
+import domain.types.TeamNameAlreadyTakenException;
+
 @Entity
 public class Team extends Model {
 

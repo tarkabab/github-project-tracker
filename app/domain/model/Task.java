@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import domain.model.Comment;
+import domain.types.TaskStatus;
 
 @Entity
 public class Task extends Model {

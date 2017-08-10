@@ -13,7 +13,7 @@ import com.google.common.collect.*;
 import com.google.common.base.Optional;
 
 import domain.model.User;
-import domain.model.UserNameAlreadyTakenException;
+import domain.types.UserNameAlreadyTakenException;
 
 public class Users extends Controller {
 	

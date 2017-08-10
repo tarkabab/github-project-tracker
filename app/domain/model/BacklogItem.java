@@ -11,6 +11,10 @@ import javax.validation.*;
 
 import java.util.List;
 
+import domain.types.BacklogItemType;
+import domain.types.BacklogItemStatus;
+import domain.types.Priority;
+
 @Entity
 public class BacklogItem extends Model {
 
@@ -29,11 +33,6 @@ public class BacklogItem extends Model {
 
     public final static Finder<Long, BacklogItem> find = new Finder<Long, BacklogItem>(Long.class, BacklogItem.class);
         
-    public final void add() throws TeamNameAlreadyTakenException {
-        // TODO: validation project
-        save();
-	}
-
 	public static Optional<BacklogItem> forId(final Long backlogItemId) {
 		return Optional.fromNullable(find.byId(backlogItemId));
 	}

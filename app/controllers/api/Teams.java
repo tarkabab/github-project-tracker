@@ -11,7 +11,7 @@ import com.google.common.collect.*;
 import com.google.common.base.Optional;
 
 import domain.model.Team;
-import domain.model.TeamNameAlreadyTakenException;
+import domain.types.TeamNameAlreadyTakenException;
 
 public class Teams extends Controller {
 

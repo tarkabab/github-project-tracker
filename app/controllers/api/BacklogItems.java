@@ -12,8 +12,8 @@ import com.google.common.base.Optional;
 import java.util.List;
 
 import domain.model.BacklogItem;
-import domain.model.Priority;
 import domain.model.Task;
+import domain.types.Priority;
 
 
 public class BacklogItems extends Controller {
@@ -216,7 +216,7 @@ public class BacklogItems extends Controller {
 			return badRequest(filled.errorsAsJson());
 		} else {
 			final BacklogItem backlogItem = filled.get();
-            backlogItem.add();
+            backlogItem.save();
 			return created(Json.toJson(backlogItem));
 		}
 	}
