@@ -33,10 +33,12 @@ PUT		/api/projects/:projectId/description 						controllers.api.Projects.updateD
 POST 	/api/projects 												controllers.api.Projects.createProject()
 
 # Backlog items:
-GET		/api/backlogitems/:backlogItemId/tasks/:taskId 				controllers.api.BacklogItems.getTask(backlogItemId: Long, taskId: Long)
-GET		/api/backlogitems/:backlogItemId/tasks						controllers.api.BacklogItems.getTasks(backlogItemId: Long)
 GET		/api/backlogitems/:backlogItemId 							controllers.api.BacklogItems.getBacklogItem(backlogItemId: Long)
 PUT		/api/backlogitems/:backlogItemId/priority 					controllers.api.BacklogItems.prioritize(backlogItemId: Long)
 PUT 	/api/backlogitems/:backlogItemId/summary 					controllers.api.BacklogItems.changeSummary(backlogItemId: Long)
 POST 	/api/backlogitems											controllers.api.BacklogItems.createBacklogItem()
-POST 	/api/backlogitems/:backlogItemId/tasks 						controllers.api.BacklogItems.createTask(backlogItemId: Long)
+
+# tasks
+GET		/api/backlogitems/:backlogItemId/tasks/:taskId 				controllers.api.Tasks.getTask(backlogItemId: Long, taskId: Long)
+GET		/api/backlogitems/:backlogItemId/tasks						controllers.api.Tasks.getTasks(backlogItemId: Long)
+POST 	/api/backlogitems/:backlogItemId/tasks 						controllers.api.Tasks.createTask(backlogItemId: Long)
