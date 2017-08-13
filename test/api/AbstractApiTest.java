@@ -24,17 +24,32 @@ public class AbstractApiTest {
 	static final String projectsEndpoint = baseUrl + "projects";
 	static final String backlogItemsEndpoint = baseUrl + "backlogitems";
 
-	static WS.Response createUser(String username) {
-		final JsonNode body = Json.toJson(ImmutableMap.of(
+	protected final static String TEST_USER_NAME = "john@example.com";
+	protected final static String TEST_USER_EMAIL = "john@example.com";
+
+    protected static JsonNode createUserRequest(String username) {
+		return createUserRequest(username, TEST_USER_EMAIL);
+	}
+
+    protected static JsonNode createUserRequest(String username, String email) {
+		return Json.toJson(ImmutableMap.of(
 			"username", username,
 			"password", "secret",
 			"profile", ImmutableMap.of(
-				"email", "john@example.com",
+				"email", email,
 				"firstName", "John",
 				"lastName", "Doe",
-				"age", 30
+				"age", 32
 				)
 			));
+    }
+
+	static WS.Response createUser(JsonNode userRequest) {
+		return WS.url(usersEndpoint).post(userRequest).get();
+	}
+
+	static WS.Response createUser(String username) {
+		final JsonNode body = createUserRequest(username);
 		return WS.url(usersEndpoint).post(body).get();
 	}
 
