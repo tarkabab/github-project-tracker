@@ -36,6 +36,7 @@ public class UserApiTest extends AbstractApiTest {
 				final JsonNode userRequest = createUserRequest(username, email);
 				WS.Response resp = createUser(userRequest);
 				assertThat(resp.getStatus()).isEqualTo(BAD_REQUEST);
+				// TODO: deviation from requirement: {"email":["This field is required"])}, needs to be clarified
 				assertEquals(resp.asJson(), Json.parse("{\"profile.email\":[\"This field is required\"]}"));
 			}
 		});
