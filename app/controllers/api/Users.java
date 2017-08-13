@@ -43,7 +43,7 @@ public class Users extends Controller {
 		if (user.isPresent()) {
 			return ok(Json.toJson(user.get().profile));
 		} else {
-		return notFound(Json.toJson(ImmutableMap.of("error", "User with id " + userId + " cannot be found")));
+			return notFound(Json.toJson(ImmutableMap.of("error", "User with id " + userId + " cannot be found")));
 		}
 	}
 

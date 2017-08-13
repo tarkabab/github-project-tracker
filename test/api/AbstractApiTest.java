@@ -24,8 +24,14 @@ public class AbstractApiTest {
 	static final String projectsEndpoint = baseUrl + "projects";
 	static final String backlogItemsEndpoint = baseUrl + "backlogitems";
 
-	protected final static String TEST_USER_NAME = "john@example.com";
+	protected final static String TEST_USER_NAME = "johndoe";
 	protected final static String TEST_USER_EMAIL = "john@example.com";
+	protected final static String TEST_USER_FIRST_NAME = "John";
+	protected final static String TEST_USER_LAST_NAME = "Doe";
+	protected final static int TEST_USER_AGE = 32;
+	protected final static String TEST_USER_PASSWORD = "secret";
+	protected final static String TEST_USER_NOTEXIST_NAME = "steveballmer";
+	protected final static String TEST_USER_UPDATED_EMAIL = "johnny@hotmail.com";
 
     protected static JsonNode createUserRequest(String username) {
 		return createUserRequest(username, TEST_USER_EMAIL);
@@ -34,12 +40,12 @@ public class AbstractApiTest {
     protected static JsonNode createUserRequest(String username, String email) {
 		return Json.toJson(ImmutableMap.of(
 			"username", username,
-			"password", "secret",
+			"password", TEST_USER_PASSWORD,
 			"profile", ImmutableMap.of(
 				"email", email,
-				"firstName", "John",
-				"lastName", "Doe",
-				"age", 32
+				"firstName", TEST_USER_FIRST_NAME,
+				"lastName", TEST_USER_LAST_NAME,
+				"age", TEST_USER_AGE
 				)
 			));
     }
@@ -60,9 +66,9 @@ public class AbstractApiTest {
 	static WS.Response updateProfile(String username, String newEmail) {
 		final JsonNode body = Json.toJson(ImmutableMap.of(
 			"email", newEmail,
-			"firstName", "John",
-			"lastName", "Doe",
-			"age", 30
+			"firstName", TEST_USER_FIRST_NAME,
+			"lastName", TEST_USER_LAST_NAME,
+			"age", TEST_USER_AGE
 			));
 		return WS.url(usersEndpoint + "/" + username + "/profile").put(body).get();
 	}
@@ -122,8 +128,6 @@ public class AbstractApiTest {
 			"url", "http://comment.url"));
 		comments.add(comment);
 
-		// comments.add("{\"login\":\"logged in commenter\",\"body\":\"comment body\",\"url\":\"http://comment.url\"}");
-		// Json.parse("[{\"login\":\"logged in commenter\",\"body\":\"comment body\",\"url\":\"http://comment.url\"}]"));
 		return WS.url(backlogItemsEndpoint + "/" + backlogItemId + "/tasks").post(body).get();
 	}
 
