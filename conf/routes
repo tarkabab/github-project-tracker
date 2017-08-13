@@ -38,7 +38,7 @@ PUT		/api/backlogitems/:backlogItemId/priority 					controllers.api.BacklogItems
 PUT 	/api/backlogitems/:backlogItemId/summary 					controllers.api.BacklogItems.changeSummary(backlogItemId: Long)
 POST 	/api/backlogitems											controllers.api.BacklogItems.createBacklogItem()
 
-# tasks
+# Tasks
 GET		/api/backlogitems/:backlogItemId/tasks/:taskId 				controllers.api.Tasks.getTask(backlogItemId: Long, taskId: Long)
 GET		/api/backlogitems/:backlogItemId/tasks						controllers.api.Tasks.getTasks(backlogItemId: Long)
 POST 	/api/backlogitems/:backlogItemId/tasks 						controllers.api.Tasks.createTask(backlogItemId: Long)
