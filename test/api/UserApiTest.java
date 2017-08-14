@@ -108,7 +108,6 @@ public class UserApiTest extends AbstractApiTest {
 				WS.Response resp = updateProfile(username, updatedEmail);
 				assertThat(resp.getStatus()).isEqualTo(PRECONDITION_FAILED);
 				JsonNode expectedResponse = Json.parse("{\"error\":\"Cannot PUT profile before creating user\"}");
-				System.out.println(resp.asJson());
 				assertEquals(expectedResponse, resp.asJson());
 			}
 		});
