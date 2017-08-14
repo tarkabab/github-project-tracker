@@ -23,7 +23,7 @@ PUT 	/api/users/:userName/profile 								controllers.api.Users.updateProfile(us
 GET		/api/teams/:teamId 											controllers.api.Teams.getTeam(teamId: Long)
 GET		/api/teams/:teamId/members									controllers.api.Teams.getMembers(teamId: Long)
 DELETE	/api/teams/:teamId/members/:memberId 						controllers.api.Teams.removeMember(teamId: Long, memberId: String)
-POST	/api/teams/:teamId/members 									controllers.api.Teams.addMember(teamId: Long, memberId: String)
+POST	/api/teams/:teamId/members 									controllers.api.Teams.addMember(teamId: Long)
 POST 	/api/teams 													controllers.api.Teams.createTeam()
 
 # Projects:

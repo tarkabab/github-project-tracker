@@ -11,7 +11,7 @@ import com.google.common.collect.*;
 import com.google.common.base.Optional;
 
 import domain.model.Team;
-import domain.types.TeamNameAlreadyTakenException;
+import domain.model.User;
 
 public class Teams extends Controller {
 
@@ -42,11 +42,7 @@ public class Teams extends Controller {
 			return badRequest(filled.errorsAsJson());
 		} else {
 			final Team team = filled.get();
-			try {
-				team.add();
-			} catch (TeamNameAlreadyTakenException ex) {
-				return badRequest(Json.toJson(ImmutableMap.of("name", ImmutableList.of(ex.getMessage()))));
-			}
+            team.save();
 			return created(Json.toJson(team));
 		}
 	}
@@ -69,8 +65,21 @@ public class Teams extends Controller {
      * This is one of the required endpoints.
      *
      */
-    public static Result addMember(Long teamId, String memberId) {
-        return TODO;
+    @BodyParser.Of(BodyParser.Json.class)
+	@Transactional
+    public static Result addMember(Long teamId) {
+		final Optional<Team> teamSearch = Team.forId(teamId);
+		if (teamSearch.isPresent()) {
+            String memberId = request().body().asJson().path("identity").getTextValue();
+            final Optional<User> userSearch = User.forId(memberId);
+		    if (userSearch.isPresent()) {
+			    return created(Json.toJson(teamSearch.get().addTeamMember(memberId)));
+            } else {
+                return notFound(Json.toJson(ImmutableMap.of("error", "User with id " + memberId + " cannot be found")));
+            }
+		} else {
+			return notFound(Json.toJson(ImmutableMap.of("error", "Team with id " + teamId + " cannot be found")));
+		}
     }
 
     /**
@@ -85,7 +94,12 @@ public class Teams extends Controller {
      *
      */
     public static Result getMembers(Long teamId) {
-        return TODO;
+		final Optional<Team> teamSearch = Team.forId(teamId);
+		if (teamSearch.isPresent()) {
+			return ok(Json.toJson(teamSearch.get().getTeamMembers()));
+		} else {
+			return notFound(Json.toJson(ImmutableMap.of("error", "Team with id " + teamId + " cannot be found")));
+		}
     }
 
     /**
@@ -98,8 +112,13 @@ public class Teams extends Controller {
      *
      */
 	public static Result getTeam(Long teamId) {
-		return TODO;
-	}
+		final Optional<Team> team = Team.forId(teamId);
+		if (team.isPresent()) {
+			return ok(Json.toJson(team.get()));
+		} else {
+			return notFound(Json.toJson(ImmutableMap.of("error", "Team with id " + teamId + " cannot be found")));
+		}
+    }
 
     /**
      * Removes the Team Member from the given Team if they are in the team

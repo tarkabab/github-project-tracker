@@ -33,6 +33,10 @@ public class AbstractApiTest {
 	protected final static String TEST_USER_NOTEXIST_NAME = "steveballmer";
 	protected final static String TEST_USER_UPDATED_EMAIL = "johnny@hotmail.com";
 
+	protected final static String TEST_TEAM_NAME = "Team Foo";
+	protected final static long TEST_TEAM_ID = 1L;
+	protected final static long TEST_TEAM_NONEXIST_ID = 9223372036854775807L;
+
     protected static JsonNode createUserRequest(String username) {
 		return createUserRequest(username, TEST_USER_EMAIL);
 	}
@@ -81,6 +85,15 @@ public class AbstractApiTest {
 
 	static WS.Response getTeam(Long teamId) {
 		return WS.url(teamsEndpoint + "/" + teamId).get().get();
+	}
+
+	static WS.Response getMembersOfTeam(Long teamId) {
+		return WS.url(teamsEndpoint + "/" + teamId + "/members").get().get();
+	}
+
+	static WS.Response addMemberToTeam(Long teamId, String identity) {
+		final JsonNode body = Json.toJson(ImmutableMap.of("identity", identity));
+		return WS.url(teamsEndpoint + "/" + teamId + "/members").post(body).get();
 	}
 
 	static WS.Response createProject(String name, Long teamId) {
